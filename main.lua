@@ -31,6 +31,8 @@ function love.load()
         fullscreen = false,
         resizable = true
     })
+    --Tabela de Inputs do teclado
+    love.keyboard.keysPressed = {}
 end
 
 function love.resize(w, h)
@@ -38,16 +40,28 @@ function love.resize(w, h)
 end
 
 function love.keypressed(key)
+    love.keyboard.keysPressed[key] = true
+
     if key == 'escape' then
         love.event.quit()
     end
 end
+
+function love.keyboard.wasPressed(Key)
+    if love.keyboard.keysPressed[Key] then
+        return true
+    else
+        return false
+    end
+end
+
 
 function love.update(dt)
     backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
     bird:update(dt)
+    love.keyboard.keysPressed = {}
 end 
 
 function love.draw()
