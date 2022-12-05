@@ -1,18 +1,18 @@
-PipePair = Class {}
+PipePair = Class{}
 
 local GAP_HEIGHT = 90
 
 function PipePair:init(y)
-    --Posiçao inicial fora da tela
-    self.x = VIRTUAL_WIDTH + math.random(32, 10)
+    self.x = VIRTUAL_WIDTH + 32
     self.y = y
-    --Posicionar obstaculos sempre em pares
+
     self.pipes = {
         ['upper'] = Pipe('top', self.y),
-        ['lower'] = Pipe('bottom', self.y + PIPE_HEIGHT + math.random(90, 200))
+        ['lower'] = Pipe('bottom', self.y + PIPE_HEIGHT + GAP_HEIGHT)
     }
-    --booleano para vereficar se esse pare pode sair da lista
+
     self.remove = false
+    self.scored = false
 end
 
 function PipePair:update(dt)
