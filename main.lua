@@ -7,6 +7,7 @@ require 'PipePair'
 
 require 'StateMachine'
 require 'states/BaseState'
+require 'states/CountDownState'
 require 'states/PlayState'
 require 'states/ScoreState'
 require 'states/TitleScreenState'
@@ -44,6 +45,19 @@ function love.load()
     hugeFont = love.graphics.newFont('flappy.ttf', 56)
     love.graphics.setFont(flappyFont)
 
+
+    sounds = {
+        ['start'] = love.audio.newSource('start.wav', 'static'),
+        ['jump'] = love.audio.newSource('jump.wav', 'static'),
+        ['hurt'] = love.audio.newSource('hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('score.wav', 'static'),
+        ['explosion'] = love.audio.newSource('explosion.wav', 'static'),
+        ['music'] = love.audio.newSource('marios_way.mp3', 'static')
+    }
+
+    sounds['music']:setLooping(true)
+    sounds['music']:play()
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
@@ -51,8 +65,10 @@ function love.load()
     })
 
     gStateMachine = StateMachine {
+        --Maquina de estados
         ['title'] = function() return TitleScreenState() end,
         ['play'] = function() return PlayState() end,
+        ['countdown'] = function() return CountDownState() end,
         ['score'] = function() return ScoreState() end
     }
     gStateMachine:change('title')
